@@ -7,7 +7,10 @@ import { Role } from '../types/role'
 export const auth = betterAuth({
   database: prismaAdapter(prisma, { provider: 'postgresql' }),
   emailAndPassword: { enabled: true, disableSignUp: true },
-  trustedOrigins: ['http://localhost:3000'],
+  trustedOrigins: (() => {
+    if (!process.env.TRUSTED_ORIGINS) throw new Error('TRUSTED_ORIGINS env variable is required')
+    return process.env.TRUSTED_ORIGINS.split(',')
+  })(),
   plugins: [bearer()],
   user: {
     additionalFields: {
