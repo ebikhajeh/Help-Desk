@@ -2,6 +2,7 @@ import { betterAuth } from 'better-auth'
 import { prismaAdapter } from 'better-auth/adapters/prisma'
 import { PrismaClient } from '../src/generated/prisma/client'
 import { PrismaPg } from '@prisma/adapter-pg'
+import { Role } from '../src/types/role'
 
 const ADMIN_EMAIL = process.env.SEED_ADMIN_EMAIL
 const ADMIN_PASSWORD = process.env.SEED_ADMIN_PASSWORD
@@ -34,7 +35,7 @@ await auth.api.signUpEmail({
 
 await prisma.user.update({
   where: { email: ADMIN_EMAIL },
-  data: { role: 'admin' },
+  data: { role: Role.Admin },
 })
 
 console.log(`Admin user created: ${ADMIN_EMAIL}`)
